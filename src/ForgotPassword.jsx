@@ -13,8 +13,8 @@ export default function ForgotPasswordPage() {
   });
 
   return (
-    <div className="max-w-md mx-auto p-6 ">
-      <h2 className="text-xl font-bold text-teal-700 mb-4">Reset Password</h2>
+    <div className="max-w-md mx-auto p-6 mt-20">
+      <h2 className="text-xl font-bold text-red-700 mb-4">Reset Password</h2>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-3">
         <input
           name="email"
@@ -29,12 +29,12 @@ export default function ForgotPasswordPage() {
           <div className="text-red-500 text-sm">{formik.errors.email}</div>
         )}
 
-        <button type="submit" className="bg-teal-600 text-white py-2 rounded hover:bg-teal-700">
+        <button type="submit" className="bg-red-600 text-white py-2 rounded hover:bg-teal-700">
           Send Reset Link
         </button>
 
         <div className="text-sm text-gray-600 mt-2">
-          Remember your password? <Link to="/login" className="text-teal-700 underline">Login</Link>
+          Remember your password? <Link to="/login" className="text-red-700 underline">Login</Link>
         </div>
       </form>
     </div>
