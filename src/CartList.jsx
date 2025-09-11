@@ -20,7 +20,7 @@ function CartList({cart,updateCart, setSubtotal}) {
   )
 
   function handleRemove(event){
-    const productId= event.currentTarget.getAttribute("productid");
+    const productId= event.currentTarget.getAttribute("data-productid");
     const newQuantityMap= cartToQuantityMap();
     delete newQuantityMap[productId];
     updateCart(newQuantityMap);
