@@ -1,6 +1,6 @@
 import { useState, type FC } from "react";
 import { FaTimes } from "react-icons/fa";
-import CreateTodoForm from "./CreateTodo";
+import CreateTodoForm from "./CreateToDo";
 import { type Task} from "./SampleData";
 
 type TasksProps = {
