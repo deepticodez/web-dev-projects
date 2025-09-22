@@ -1,0 +1,87 @@
+import React from "react";
+import {withFormik} from "formik";
+import * as Yup from "yup";
+import { Link } from "react-router-dom";
+import InputField from "./InputField";
+import axios from "axios";
+import { withUser, withAlert } from "./withProvider";
+
+function callLoginApi(values,bag){
+  axios.post('https://myeasykart.codeyogi.io/login', {
+        email: values.email,
+        password: values.password
+    }).then((response) => {
+        const { user, token } = response.data;
+        bag.props.setAlert({type:"success",message:'Login was successfull'});
+        localStorage.setItem("token", token);
+        bag.props.setUser(user);
+    }).catch((error) => {
+        const errorMessage = error.response?.data?.message || error.response?.data || "Something went wrong";  
+        bag.props.setAlert({ type: "error", message: errorMessage });
+    })
+}
+
+
+const initialValues = {
+    email: "",
+    password: ""
+  };
+
+  const schema = Yup.object({
+    email: Yup.string().email("Invalid email").required("Required"),
+    password: Yup.string().min(6).required("Required")
+  });
+
+
+export function LoginPage({values,errors,touched,handleChange,handleBlur,handleSubmit}) {
+  return (
+  <div className="mx-auto max-w-md p-6 mt-30">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <h2 className="text-xl font-bold text-red-700 mb-4">Login</h2>
+          <InputField
+            name="email"
+            id="email"
+            type="email"
+            placeholder="Email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.email}
+            touched={touched.email}
+          />
+
+          <InputField
+            name="password"
+            id="password"
+            type="password"
+            placeholder="Password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.password}
+            touched={touched.password}
+          />
+
+        <button type="submit" className="bg-red-600 text-white py-2 rounded hover:bg-red-700 disabled:bg-red-200">
+          Login
+        </button>
+
+        <div className="text-sm text-gray-600 mt-2">
+          Don't have an account? <Link to="/signup" className="text-red-700 underline">Signup</Link>
+        </div>
+        <div className="text-sm text-gray-600">
+          <Link to="/forgot-password" className="text-red-700 underline">Forgot Password?</Link>
+        </div>
+      </form>
+  </div>
+  );
+}
+
+const FormikLogin= withFormik({
+  initialValues: initialValues,
+  validationSchema: schema,
+  handleSubmit: callLoginApi,
+  validateOnMount: true
+})(LoginPage); 
+
+export default withAlert(withUser(FormikLogin));
